@@ -22,11 +22,21 @@ async function bootstrap() {
     .setTitle('Ajwain')
     .setDescription('The Ajwain API description')
     .setVersion('1.0')
+    .addCookieAuth('token_cookie', {
+      type: 'apiKey',
+      in: 'cookie',
+      name: process.env.JWT_COOKIE_NAME,
+    })
     .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
 
-  SwaggerModule.setup('api', app, documentFactory);
+  SwaggerModule.setup('api', app, documentFactory, {
+    swaggerOptions: {
+      persistAuthorization: true,
+      withCredentials: true,
+    },
+  });
 
   await app.listen(process.env.PORT ?? 3001);
 }

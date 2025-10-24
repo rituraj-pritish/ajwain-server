@@ -2,4 +2,5 @@ model Project {
   id    Int   @id   @default(autoincrement())
   name    String
   createdAt   DateTime    @default(now())
+  workspaces    Workspace[]
 }

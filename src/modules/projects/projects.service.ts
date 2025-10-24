@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { AuthService } from 'src/auth/auth.service';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { AuthService } from 'src/modules/auth/auth.service';
+import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { CreateProjectDto } from './projects.schema';
-import { UsersService } from 'src/users/users.service';
-import { UserRole } from 'src/users/users.schema';
+import { UsersService } from 'src/modules/users/users.service';
+import { UserRole } from 'src/modules/users/users.schema';
 
 @Injectable()
 export class ProjectsService {
@@ -12,6 +12,22 @@ export class ProjectsService {
     private readonly authService: AuthService,
     private readonly usersService: UsersService,
   ) {}
+
+  findOne(id: number) {
+    return this.prisma.project.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        workspaces: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+  }
 
   async createProject(body: CreateProjectDto) {
     const project = await this.prisma.project.create({
@@ -28,10 +44,11 @@ export class ProjectsService {
       projectId: project.id,
     });
 
-    const token = await this.authService.getToken(user.id);
+    const token = await this.authService.getToken({
+      userId: user.id,
+      projectId: project.id,
+    });
 
-    return {
-      token,
-    };
+    return token;
   }
 }

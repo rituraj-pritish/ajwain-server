@@ -29,3 +29,11 @@ export class CreateUserDto {
   @IsNotEmpty()
   projectId: number;
 }
+
+export class SignInDto {
+  @ApiProperty()
+  email: string;
+
+  @ApiProperty()
+  password: string;
+}

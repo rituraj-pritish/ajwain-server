@@ -2,4 +2,8 @@ model Workspace {
   id    Int   @id   @default(autoincrement())
   name    String
   createdAt   DateTime    @default(now())
+  createdByUserId   Int
+  projectId   Int
+  project   Project   @relation(fields: [projectId], references: [id])
+  tasks   Task[]
 }

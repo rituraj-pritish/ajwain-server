@@ -4,6 +4,9 @@ model Task {
   description   String?
   createdAt   DateTime    @default(now())
   createdByUserId   Int
-  date    DateTime
-  memberIds   String
+  date    DateTime?
+  memberIds   String?
+  status    TaskStatus    @default(PENDING)
+  workspaceId   Int
+  workspace   Workspace   @relation(fields: [workspaceId], references: [id])
 }
