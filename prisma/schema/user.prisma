@@ -4,4 +4,6 @@ model User {
   email   String
   password    String
   role    UserRole    @default(MEMBER)
+  createdAt   DateTime    @default(now())
+  projectId   Int
 }

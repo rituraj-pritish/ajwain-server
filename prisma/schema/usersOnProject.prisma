@@ -1,6 +1,0 @@
-model UsersOnProject {
-  userId    Int
-  projectId   Int
-
-  @@id([userId, projectId])
-}

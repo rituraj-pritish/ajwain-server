@@ -1,4 +1,4 @@
-model Project {
+model Workspace {
   id    Int   @id   @default(autoincrement())
   name    String
   createdAt   DateTime    @default(now())

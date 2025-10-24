@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateProjectDto } from './projects.schema';
 
 @Injectable()
 export class ProjectsService {
@@ -9,10 +10,16 @@ export class ProjectsService {
     private readonly authService: AuthService,
   ) {}
 
-  async createProject(body) {
+  async createProject(body: CreateProjectDto) {
     const hashedPassword = await this.authService.createPasswordHash(
       body.password,
     );
+
+    const project = await this.prisma.project.create({
+      data: {
+        name: body.projectName,
+      },
+    });
 
     const user = await this.prisma.user.create({
       data: {
@@ -20,22 +27,14 @@ export class ProjectsService {
         email: body.email,
         password: hashedPassword,
         role: 'PROJECT_ADMIN',
-      },
-    });
-
-    const project = await this.prisma.project.create({
-      data: {
-        name: body.projectName
-      },
-    });
-
-    await this.prisma.usersOnProject.create({
-      data: {
-        userId: user.id,
         projectId: project.id,
       },
     });
 
-    return this.authService.getToken(user.id);
+    const token = await this.authService.getToken(user.id);
+
+    return {
+      token,
+    };
   }
 }

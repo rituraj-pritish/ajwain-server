@@ -1,5 +1,4 @@
 enum UserRole {
   PROJECT_ADMIN
-  TEAM_ADMIN
   MEMBER
 }
