@@ -1,5 +1,4 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
 import {
   IsEnum,
   IsISO8601,
@@ -28,9 +27,8 @@ export class CreateTaskDto {
   createdByUserId: number;
 
   @IsOptional()
-  @IsISO8601()
+  // @IsISO8601()
   @ApiPropertyOptional()
-  @Type(() => Date)
   date: Date;
 
   @ApiProperty()
@@ -61,7 +59,6 @@ export class UpdateTaskDto {
   @IsOptional()
   @IsISO8601()
   @ApiPropertyOptional()
-  @Type(() => Date)
   date: Date;
 
   @IsOptional()

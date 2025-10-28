@@ -10,6 +10,28 @@ export class UsersService {
     private readonly authService: AuthService,
   ) {}
 
+  findAll(projectId: number) {
+    return this.prisma.user.findMany({
+      where: {
+        projectId,
+      },
+      omit: {
+        password: true,
+      },
+    });
+  }
+
+  findOneWithId(id: number) {
+    return this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+      omit: {
+        password: true,
+      },
+    });
+  }
+
   findOneWithEmail(email: string) {
     return this.prisma.user.findFirst({
       where: {

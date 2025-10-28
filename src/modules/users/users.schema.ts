@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export enum UserRole {
   PROJECT_ADMIN = 'PROJECT_ADMIN',
@@ -24,9 +24,6 @@ export class CreateUserDto {
   @IsNotEmpty()
   role: UserRole;
 
-  @ApiProperty()
-  @IsNumber()
-  @IsNotEmpty()
   projectId: number;
 }
 
