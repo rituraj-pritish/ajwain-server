@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Req } from '@nestjs/common';
+import { Body, Controller, Post, Put, Req } from '@nestjs/common';
 import { type RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
 import { CreateTaskDto, UpdateTaskDto } from './tasks.schema';
 import { TasksService } from './tasks.service';
