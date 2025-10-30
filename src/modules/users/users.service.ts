@@ -72,4 +72,12 @@ export class UsersService {
 
     return token;
   }
+
+  deleteAllWithProjectId(id: number) {
+    return this.prisma.user.deleteMany({
+      where: {
+        projectId: id,
+      },
+    });
+  }
 }

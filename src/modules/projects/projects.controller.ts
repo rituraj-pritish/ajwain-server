@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Req, Res } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './projects.schema';
 import { Public } from '../auth/auth.decorator';
@@ -26,5 +26,16 @@ export class ProjectsController {
     response.cookie(process.env.JWT_COOKIE_NAME!, token, responseCookieConfig);
 
     return { message: 'Sign in successful' };
+  }
+
+  @Delete('delete')
+  delete(
+    @Res({ passthrough: true }) response: Response,
+    @Req() request: RequestWithUser,
+  ) {
+    response.clearCookie(process.env.JWT_COOKIE_NAME!);
+    response.status(201);
+
+    return this.projectService.delete(Number(request.user.projectId));
   }
 }

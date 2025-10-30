@@ -4,6 +4,7 @@ import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { CreateProjectDto } from './projects.schema';
 import { UsersService } from 'src/modules/users/users.service';
 import { UserRole } from 'src/modules/users/users.schema';
+import { WorkspacesService } from '../workspaces/workspaces.service';
 
 @Injectable()
 export class ProjectsService {
@@ -11,6 +12,7 @@ export class ProjectsService {
     private readonly prisma: PrismaService,
     private readonly authService: AuthService,
     private readonly usersService: UsersService,
+    private readonly workspacesService: WorkspacesService,
   ) {}
 
   findOne(id: number) {
@@ -50,5 +52,16 @@ export class ProjectsService {
     });
 
     return token;
+  }
+
+  async delete(id: number) {
+    await this.usersService.deleteAllWithProjectId(id);
+    await this.workspacesService.deleteAllWithProjectId(id);
+
+    return this.prisma.project.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

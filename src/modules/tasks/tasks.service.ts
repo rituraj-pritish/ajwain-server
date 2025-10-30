@@ -77,4 +77,12 @@ export class TasksService {
       createdBy,
     };
   }
+
+  deleteAllWithWorkspaceId(id: number) {
+    return this.prisma.task.deleteMany({
+      where: {
+        workspaceId: id,
+      },
+    });
+  }
 }

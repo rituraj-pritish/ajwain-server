@@ -11,6 +11,14 @@ export class CreateWorkspaceDto {
   projectId: number;
 }
 
+export class UpdateWorkspaceDto {
+  @IsNotEmpty()
+  @ApiProperty()
+  name: string;
+
+  id: number;
+}
+
 export class DeleteWorkspaceDto {
   @IsNotEmpty()
   @ApiProperty()

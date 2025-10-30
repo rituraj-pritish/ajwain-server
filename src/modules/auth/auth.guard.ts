@@ -47,7 +47,8 @@ export class AuthGuard implements CanActivate {
   }
 
   private extractTokenFromCookie(request: RequestWithUser): string | undefined {
-    const token = request.cookies['token'];
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const token: string = request.cookies['token'];
     return token;
   }
 }

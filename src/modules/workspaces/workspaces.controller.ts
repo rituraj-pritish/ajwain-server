@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Post, Put, Req } from '@nestjs/common';
 import { WorkspacesService } from './workspaces.service';
 import {
   CreateWorkspaceDto,
   DeleteWorkspaceDto,
   GetWorkspaceDto,
+  UpdateWorkspaceDto,
 } from './workspaces.schema';
 import { type RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
 
@@ -26,6 +27,11 @@ export class WorkspacesController {
       createdByUserId: req.user.userId,
       projectId: req.user.projectId,
     });
+  }
+
+  @Put('update')
+  updateWorkspace(@Body() body: UpdateWorkspaceDto) {
+    return this.workspacesService.update(body);
   }
 
   @Delete('delete')
