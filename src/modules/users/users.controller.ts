@@ -3,8 +3,8 @@ import { UsersService } from './users.service';
 import { CreateUserDto, SignInDto } from './users.schema';
 import { type Response } from 'express';
 import { Public } from '../auth/auth.decorator';
-import { responseCookieConfig } from 'src/common/response-cookie-config';
-import { type RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
+import { responseCookieConfig } from '../../common/response-cookie-config';
+import { type RequestWithUser } from '../../common/interfaces/request-with-user.interface';
 
 @Controller('users')
 export class UsersController {
