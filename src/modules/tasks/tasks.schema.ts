@@ -33,7 +33,7 @@ export class CreateTaskDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  workspaceId: number;
+  boardId: number;
 
   @IsOptional()
   @IsString()

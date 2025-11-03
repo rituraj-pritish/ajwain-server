@@ -30,8 +30,11 @@ export class WorkspacesController {
   }
 
   @Put('update')
-  updateWorkspace(@Body() body: UpdateWorkspaceDto) {
-    return this.workspacesService.update(body);
+  updateWorkspace(
+    @Body() body: UpdateWorkspaceDto,
+    @Req() req: RequestWithUser,
+  ) {
+    return this.workspacesService.update(body, Number(req.user.projectId));
   }
 
   @Delete('delete')

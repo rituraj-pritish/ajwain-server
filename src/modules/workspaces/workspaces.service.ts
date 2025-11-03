@@ -5,22 +5,19 @@ import {
   DeleteWorkspaceDto,
   UpdateWorkspaceDto,
 } from './workspaces.schema';
-import { TasksService } from '../tasks/tasks.service';
+import { BoardsService } from '../boards/boards.service';
 
 @Injectable()
 export class WorkspacesService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly tasksService: TasksService,
+    private readonly boardsService: BoardsService,
   ) {}
 
   findOne(id: number) {
     return this.prisma.workspace.findUnique({
       where: {
         id,
-      },
-      include: {
-        tasks: true,
       },
     });
   }
@@ -29,6 +26,7 @@ export class WorkspacesService {
     const existingWorkspace = await this.prisma.workspace.findFirst({
       where: {
         name: data.name,
+        projectId: Number(data.projectId),
       },
     });
 
@@ -40,10 +38,11 @@ export class WorkspacesService {
     });
   }
 
-  async update(data: UpdateWorkspaceDto) {
+  async update(data: UpdateWorkspaceDto, projectId: number) {
     const existingWorkspace = await this.prisma.workspace.findFirst({
       where: {
         name: data.name,
+        projectId,
       },
     });
 
@@ -58,7 +57,9 @@ export class WorkspacesService {
     });
   }
 
-  delete(data: DeleteWorkspaceDto) {
+  async delete(data: DeleteWorkspaceDto) {
+    await this.boardsService.deleteAllWithWorkspaceId(data.id);
+
     return this.prisma.workspace.delete({
       where: {
         id: data.id,
@@ -75,7 +76,7 @@ export class WorkspacesService {
 
     await Promise.all(
       workspaces.map(({ id }) =>
-        this.tasksService.deleteAllWithWorkspaceId(id),
+        this.boardsService.deleteAllWithWorkspaceId(id),
       ),
     );
 

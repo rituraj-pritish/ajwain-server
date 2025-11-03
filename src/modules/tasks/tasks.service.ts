@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTaskDto, UpdateTaskDto } from './tasks.schema';
 import { UsersService } from '../users/users.service';
-import { Task } from '@prisma/client';
+import { Task, TaskStatus } from '@prisma/client';
 
 @Injectable()
 export class TasksService {
@@ -28,10 +28,10 @@ export class TasksService {
     };
   }
 
-  getAll(workspaceId: number) {
+  getAll(boardId: number) {
     return this.prisma.task.findMany({
       where: {
-        workspaceId,
+        boardId,
       },
     });
   }
@@ -39,6 +39,17 @@ export class TasksService {
   create(data: CreateTaskDto) {
     return this.prisma.task.create({
       data,
+    });
+  }
+
+  updateStatus(data: { id: number; status: TaskStatus }) {
+    return this.prisma.task.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        status: data.status,
+      },
     });
   }
 
@@ -78,10 +89,28 @@ export class TasksService {
     };
   }
 
-  deleteAllWithWorkspaceId(id: number) {
-    return this.prisma.task.deleteMany({
+  async deleteAllWithBoardId(id: number) {
+    const boards = await this.prisma.board.findMany({
       where: {
         workspaceId: id,
+      },
+    });
+
+    return Promise.all(
+      boards.map((board) =>
+        this.prisma.task.deleteMany({
+          where: {
+            boardId: board.id,
+          },
+        }),
+      ),
+    );
+  }
+
+  delete(id: number) {
+    return this.prisma.task.delete({
+      where: {
+        id,
       },
     });
   }

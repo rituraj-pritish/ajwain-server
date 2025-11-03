@@ -7,6 +7,6 @@ model Task {
   date    DateTime?
   memberIds   String?
   status    TaskStatus    @default(PENDING)
-  workspaceId   Int
-  workspace   Workspace   @relation(fields: [workspaceId], references: [id])
+  boardId   Int?
+  board   Board?   @relation(fields: [boardId], references: [id])
 }

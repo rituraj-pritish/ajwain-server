@@ -25,6 +25,12 @@ export class ProjectsService {
           select: {
             id: true,
             name: true,
+            boards: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
           },
         },
       },

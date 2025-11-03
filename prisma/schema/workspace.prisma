@@ -5,5 +5,5 @@ model Workspace {
   createdByUserId   Int
   projectId   Int
   project   Project   @relation(fields: [projectId], references: [id])
-  tasks   Task[]
+  boards    Board[]
 }

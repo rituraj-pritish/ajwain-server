@@ -7,6 +7,7 @@ import { WorkspacesModule } from 'src/modules/workspaces/workspaces.module';
 import { AuthGuard } from './modules/auth/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { TasksModule } from './modules/tasks/tasks.module';
+import { BoardsModule } from './modules/boards/boards.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { TasksModule } from './modules/tasks/tasks.module';
     AuthModule,
     WorkspacesModule,
     TasksModule,
+    BoardsModule,
   ],
   providers: [
     {
