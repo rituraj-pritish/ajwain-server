@@ -1,5 +1,4 @@
 export const responseCookieConfig = {
-  httpOnly: true,
-  secure: true,
-  sameSite: false,
+  httpOnly: false,
+  secure: process.env.NODE_ENV === 'production',
 };
