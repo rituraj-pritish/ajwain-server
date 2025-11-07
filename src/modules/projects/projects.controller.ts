@@ -3,8 +3,8 @@ import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './projects.schema';
 import { Public } from '../auth/auth.decorator';
 import { type Response } from 'express';
-import { type RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
-import { responseCookieConfig } from 'src/common/response-cookie-config';
+import { type RequestWithUser } from '../../common/interfaces/request-with-user.interface';
+import { responseCookieConfig } from '../../common/response-cookie-config';
 
 @Controller('projects')
 export class ProjectsController {
@@ -22,7 +22,6 @@ export class ProjectsController {
     @Body() body: CreateProjectDto,
   ) {
     const token = await this.projectService.createProject(body);
-
     response.cookie(process.env.JWT_COOKIE_NAME!, token, responseCookieConfig);
 
     return { message: 'Sign in successful' };

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { AuthService } from 'src/modules/auth/auth.service';
-import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { AuthService } from '../auth/auth.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateProjectDto } from './projects.schema';
-import { UsersService } from 'src/modules/users/users.service';
-import { UserRole } from 'src/modules/users/users.schema';
+import { UsersService } from '../users/users.service';
+import { UserRole } from '../users/users.schema';
 import { WorkspacesService } from '../workspaces/workspaces.service';
 
 @Injectable()

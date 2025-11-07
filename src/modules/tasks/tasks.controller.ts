@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Post, Put, Req } from '@nestjs/common';
-import { type RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
+import { type RequestWithUser } from '../../common/interfaces/request-with-user.interface';
 import { CreateTaskDto, UpdateTaskDto } from './tasks.schema';
 import { TasksService } from './tasks.service';
 import { TaskStatus } from '@prisma/client';

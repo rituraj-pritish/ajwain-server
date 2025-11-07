@@ -10,7 +10,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { BoardsService } from './boards.service';
-import { type RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
+import { type RequestWithUser } from '../../common/interfaces/request-with-user.interface';
 
 @Controller('boards')
 export class BoardsController {

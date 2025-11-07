@@ -6,7 +6,7 @@ import {
   GetWorkspaceDto,
   UpdateWorkspaceDto,
 } from './workspaces.schema';
-import { type RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
+import { type RequestWithUser } from '../../common/interfaces/request-with-user.interface';
 
 @Controller('workspaces')
 export class WorkspacesController {
