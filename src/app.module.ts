@@ -8,6 +8,7 @@ import { AuthGuard } from './modules/auth/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { TasksModule } from './modules/tasks/tasks.module';
 import { BoardsModule } from './modules/boards/boards.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { BoardsModule } from './modules/boards/boards.module';
     WorkspacesModule,
     TasksModule,
     BoardsModule,
+    NotificationsModule,
   ],
   providers: [
     {
