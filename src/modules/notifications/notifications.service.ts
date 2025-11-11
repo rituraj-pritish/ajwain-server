@@ -12,11 +12,11 @@ export class NotificationsService {
   ) {}
 
   async create(data: CreateNotificationDto) {
-    await this.prisma.notification.create({
+    const notification = await this.prisma.notification.create({
       data,
     });
 
-    this.eventEmitter.emit('added', data);
+    this.eventEmitter.emit('added', notification);
   }
 
   get(id: number) {

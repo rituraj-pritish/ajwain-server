@@ -4,6 +4,7 @@ import { CreateTaskDto, UpdateTaskDto } from './tasks.schema';
 import { UsersService } from '../users/users.service';
 import { Task, TaskStatus } from '@prisma/client';
 import { NotificationsService } from '../notifications/notifications.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class TasksService {
@@ -11,6 +12,7 @@ export class TasksService {
     private readonly prisma: PrismaService,
     private readonly usersService: UsersService,
     private readonly notificationsService: NotificationsService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async findOne(id: number) {
@@ -35,6 +37,9 @@ export class TasksService {
       where: {
         boardId,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 
@@ -49,19 +54,17 @@ export class TasksService {
         },
       });
 
-      await Promise.all(
-        task.memberIds.split(',').map((id) =>
-          this.notificationsService.create({
-            userId: Number(id),
-            boardId: task.boardId!,
-            boardName: board!.name,
-            workspaceId: board!.workspaceId,
-            workspaceName: board!.workspace.name,
-            taskId: task.id,
-            taskTitle: task.title,
-          }),
-        ),
-      );
+      task.memberIds.split(',').forEach((id) => {
+        this.eventEmitter.emit('task.added', {
+          userId: Number(id),
+          boardId: task.boardId!,
+          boardName: board!.name,
+          workspaceId: board!.workspaceId,
+          workspaceName: board!.workspace.name,
+          taskId: task.id,
+          taskTitle: task.title,
+        });
+      });
     }
   }
 
@@ -70,7 +73,9 @@ export class TasksService {
       data,
     });
 
-    await this.createTaskNotification(task);
+    this.createTaskNotification(task);
+
+    return task;
   }
 
   updateStatus(data: { id: number; status: TaskStatus }) {
@@ -92,7 +97,7 @@ export class TasksService {
       data,
     });
 
-    await this.createTaskNotification(task);
+    this.createTaskNotification(task);
 
     const memberDetails = await this.getMemberDetails(task);
 
