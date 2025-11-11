@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "NotificationStatus" AS ENUM ('UNREAD', 'ARCHIVED');
+
+-- CreateEnum
 CREATE TYPE "TaskStatus" AS ENUM ('PENDING', 'IN_PROGRESS', 'COMPLETED');
 
 -- CreateEnum
@@ -13,6 +16,21 @@ CREATE TABLE "Board" (
     "workspaceId" INTEGER NOT NULL,
 
     CONSTRAINT "Board_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Notification" (
+    "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "status" "NotificationStatus" NOT NULL DEFAULT 'UNREAD',
+    "boardId" INTEGER NOT NULL,
+    "boardName" TEXT NOT NULL,
+    "workspaceId" INTEGER NOT NULL,
+    "workspaceName" TEXT NOT NULL,
+    "taskId" INTEGER NOT NULL,
+    "taskTitle" TEXT NOT NULL,
+
+    CONSTRAINT "Notification_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable

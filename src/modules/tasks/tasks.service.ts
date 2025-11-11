@@ -3,12 +3,16 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateTaskDto, UpdateTaskDto } from './tasks.schema';
 import { UsersService } from '../users/users.service';
 import { Task, TaskStatus } from '@prisma/client';
+import { NotificationsService } from '../notifications/notifications.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class TasksService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly usersService: UsersService,
+    private readonly notificationsService: NotificationsService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async findOne(id: number) {
@@ -33,13 +37,45 @@ export class TasksService {
       where: {
         boardId,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 
-  create(data: CreateTaskDto) {
-    return this.prisma.task.create({
+  async createTaskNotification(task: Task) {
+    if (task.memberIds && task.memberIds.split(',').length > 0) {
+      const board = await this.prisma.board.findUnique({
+        where: {
+          id: task.boardId!,
+        },
+        include: {
+          workspace: true,
+        },
+      });
+
+      task.memberIds.split(',').forEach((id) => {
+        this.eventEmitter.emit('task.added', {
+          userId: Number(id),
+          boardId: task.boardId!,
+          boardName: board!.name,
+          workspaceId: board!.workspaceId,
+          workspaceName: board!.workspace.name,
+          taskId: task.id,
+          taskTitle: task.title,
+        });
+      });
+    }
+  }
+
+  async create(data: CreateTaskDto) {
+    const task = await this.prisma.task.create({
       data,
     });
+
+    this.createTaskNotification(task);
+
+    return task;
   }
 
   updateStatus(data: { id: number; status: TaskStatus }) {
@@ -60,6 +96,8 @@ export class TasksService {
       },
       data,
     });
+
+    this.createTaskNotification(task);
 
     const memberDetails = await this.getMemberDetails(task);
 
