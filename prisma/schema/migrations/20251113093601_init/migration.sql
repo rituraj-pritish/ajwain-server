@@ -19,6 +19,16 @@ CREATE TABLE "Board" (
 );
 
 -- CreateTable
+CREATE TABLE "Comment" (
+    "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "content" TEXT NOT NULL,
+    "taskId" INTEGER NOT NULL,
+
+    CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Notification" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
@@ -83,6 +93,9 @@ CREATE TABLE "Workspace" (
 
 -- AddForeignKey
 ALTER TABLE "Board" ADD CONSTRAINT "Board_workspaceId_fkey" FOREIGN KEY ("workspaceId") REFERENCES "Workspace"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Task" ADD CONSTRAINT "Task_boardId_fkey" FOREIGN KEY ("boardId") REFERENCES "Board"("id") ON DELETE SET NULL ON UPDATE CASCADE;

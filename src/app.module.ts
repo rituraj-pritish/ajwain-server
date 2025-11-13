@@ -10,6 +10,7 @@ import { TasksModule } from './modules/tasks/tasks.module';
 import { BoardsModule } from './modules/boards/boards.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { CommentsModule } from './modules/comments/comments.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     TasksModule,
     BoardsModule,
     NotificationsModule,
+    CommentsModule,
   ],
   providers: [
     {

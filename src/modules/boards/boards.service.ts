@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { TasksService } from '../tasks/tasks.service';
 import { CreateBoardDto } from './boards.schema';
@@ -10,8 +10,8 @@ export class BoardsService {
     private readonly tasksService: TasksService,
   ) {}
 
-  findOne(id: number) {
-    return this.prisma.board.findUnique({
+  async findOne(id: number) {
+    const board = await this.prisma.board.findUnique({
       where: {
         id,
       },
@@ -20,6 +20,10 @@ export class BoardsService {
         workspace: true,
       },
     });
+
+    if (!board) throw new NotFoundException();
+
+    return board;
   }
 
   create(data: CreateBoardDto) {

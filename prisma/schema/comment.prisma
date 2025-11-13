@@ -1,0 +1,7 @@
+model Comment {
+  id    Int   @id   @default(autoincrement())
+  createdAt   DateTime    @default(now())
+  userId    Int
+  content   String
+  taskId    Int
+}
