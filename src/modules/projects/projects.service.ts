@@ -54,6 +54,7 @@ export class ProjectsService {
 
     const token = await this.authService.getToken({
       userId: user.id,
+      role: user.role,
       projectId: project.id,
     });
 

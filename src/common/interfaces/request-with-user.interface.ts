@@ -2,6 +2,7 @@ import { Request } from 'express';
 
 interface UserPayload {
   userId: number;
+  role: string;
   projectId: number;
 }
 

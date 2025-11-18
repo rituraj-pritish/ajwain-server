@@ -67,6 +67,7 @@ export class UsersService {
 
     const token = await this.authService.getToken({
       userId: user.id,
+      role: user.role,
       projectId: user.projectId,
     });
 

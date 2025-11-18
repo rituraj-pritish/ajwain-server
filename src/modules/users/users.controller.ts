@@ -1,16 +1,28 @@
-import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto, SignInDto } from './users.schema';
+import { CreateUserDto, SignInDto, UserRole } from './users.schema';
 import { type Response } from 'express';
 import { Public } from '../auth/auth.decorator';
 import { responseCookieConfig } from '../../common/response-cookie-config';
 import { type RequestWithUser } from '../../common/interfaces/request-with-user.interface';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('create')
+  @UseGuards(RolesGuard)
+  @Roles([UserRole.PROJECT_ADMIN])
   createUser(@Body() data: CreateUserDto, @Req() req: RequestWithUser) {
     return this.usersService.createUser({
       ...data,
