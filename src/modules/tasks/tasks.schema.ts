@@ -39,6 +39,8 @@ export class CreateTaskDto {
   @IsString()
   @ApiPropertyOptional()
   memberIds: string;
+
+  membersIds: number[];
 }
 
 export class UpdateTaskDto {
@@ -65,6 +67,8 @@ export class UpdateTaskDto {
   @IsString()
   @ApiPropertyOptional()
   memberIds: string;
+
+  membersIds: number[];
 
   @IsOptional()
   @IsEnum(TaskStatus)

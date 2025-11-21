@@ -6,6 +6,7 @@ model Task {
   createdByUserId   Int
   date    DateTime?
   memberIds   String?
+  membersIds   Int[]
   status    TaskStatus    @default(PENDING)
   boardId   Int?
   board   Board?   @relation(fields: [boardId], references: [id])
